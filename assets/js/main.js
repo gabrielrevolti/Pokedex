@@ -15,6 +15,11 @@ const fetchPokemon = async (pokemon) => {
     if(apiResponse.status == 200){
         const data = await apiResponse.json()
         return data
+    }else if (apiResponse.status == 404){
+        pokemonImg.style.display = 'none'
+        pokemonName.innerHTML = 'Not Found'
+        pokemonNumber.innerHTML = ''
+        input.value = ''
     }
 }
 
@@ -57,13 +62,24 @@ const renderPokemon = async (pokemon) => {
 const renderShinyPokemon = async (pokemon) => {
     const data = await fetchPokemon(pokemon)
 
-    if(shiny.classList.value == 'btn-shiny selecionado'){
-        shiny.classList.remove('selecionado')
-        pokemonImg.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default']
-    } else if (shiny.classList.value !== 'btn-shiny selecionado') {
-        shiny.classList.add('selecionado')
-        pokemonImg.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_shiny']
+    if(data.id <= 649){
+        if(shiny.classList.value == 'btn-shiny selecionado'){
+            shiny.classList.remove('selecionado')
+            pokemonImg.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default']
+        } else if (shiny.classList.value !== 'btn-shiny selecionado') {
+            shiny.classList.add('selecionado')
+            pokemonImg.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_shiny']
+        }
+    }else {
+        if(shiny.classList.value == 'btn-shiny selecionado'){
+            shiny.classList.remove('selecionado')
+            pokemonImg.src = data['sprites']['front_default']
+        } else if (shiny.classList.value !== 'btn-shiny selecionado') {
+            shiny.classList.add('selecionado')
+            pokemonImg.src = data['sprites']['front_shiny']
+        }
     }
+  
 }
 
 form.addEventListener('submit', (event) => {
